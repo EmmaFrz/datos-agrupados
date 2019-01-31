@@ -58,8 +58,8 @@
                 <section role="main" class="content-body">
                     <header class="page-header">
                         <h2>Default Layout</h2>
-                        
                     </header>
+                    @yield('content')
                 </section>
             </div>
             <!-- Vendor -->

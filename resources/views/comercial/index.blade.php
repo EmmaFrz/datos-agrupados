@@ -40,11 +40,6 @@
 </head>
 @section('content')
 	<h1>Titulo</h1>
-	@if($num < 0)
-		<h1 style="color: red">{{$num}}</h1>
-	@else
-		<h1 style="color: rebeccapurple">{{$num}}</h1>
-	@endif
 	<label for="">Consultores</label>
 <form action="/comercial-datos" method="get">
 	<div class="input-daterange input-group" data-plugin-datepicker="">

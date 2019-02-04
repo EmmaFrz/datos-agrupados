@@ -14,5 +14,5 @@ Route::get('/',function(){
 	return view('welcome');
 });
 
-Route::get('/comercial', 'ComercialController@index');
+Route::get('/comercial', 'ComercialController@index')->name('comercial.index');
 Route::get('/comercial-datos','ComercialController@datos');

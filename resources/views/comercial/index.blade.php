@@ -57,12 +57,11 @@
 		@foreach($correlatives as $correlative)
 			{{$correlative['nombre']}}<br>
 			@foreach($correlative['data'] as $data)
-				@foreach($data as $d)
-						<p>---------------------</p>
-						{{$d->liquido}} 	
-						{{$d->data_emissao}}<br>
-						<p>----------------------</p>
-				@endforeach
+			{{$data->year}} 	<br>
+			{{$data->month}} <br>
+			{{$data->liquido}} <br>
+			{{$data->comision}} <br>
+			<p>----------------------</p>
 			@endforeach
 		@endforeach
 	@endif

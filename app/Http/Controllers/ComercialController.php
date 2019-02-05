@@ -13,7 +13,7 @@ class ComercialController extends Controller
 
   	return view('comercial.index',[
   		'data' => $data,
-      'correlative' => false,
+      'correlatives' => false,
       'pizza' => false,
       'graphic' => false
   	]);
@@ -42,26 +42,24 @@ class ComercialController extends Controller
       {
         
       $correlatives = DB::table('cao_fatura as invoice')
-      ->select('invoice.*','os.*','salary.*',DB::raw('YEAR(invoice.data_emissao) as year, MONTH(invoice.data_emissao) as month, invoice.valor - (invoice.valor*(invoice.total_imp_inc/100)) as liquido, (invoice.valor - (invoice.valor*invoice.total_imp_inc))*invoice.comissao_cn as comision'))
-      ->join('cao_os as os','os.co_os','invoice.co_os')
-      ->join('cao_salario as salary','salary.co_usuario','os.co_usuario')
-      ->whereMonth('invoice.data_emissao','>=',Carbon::parse($request->start)->format('m'))
-      ->whereMonth('invoice.data_emissao','<=',Carbon::parse($request->end)->format('m')) 
-      ->whereYear('invoice.data_emissao','>=',Carbon::parse($request->start)->format('Y'))
-      ->whereYear('invoice.data_emissao','<=',Carbon::parse($request->end)->format('Y'))     
-      ->where('os.co_usuario',$consultor)
-      ->orderBy('invoice.data_emissao','asc')
-      ->get()
-      ->groupBy(function($val){
-        return Carbon::parse($val->data_emissao)->format('Y-m');
-      });
+      ->select(DB::raw('YEAR(invoice.data_emissao) as year, MONTH(invoice.data_emissao) as month,SUM(invoice.valor - (invoice.valor*(invoice.total_imp_inc/100))) as liquido, SUM(invoice.valor - (invoice.valor*invoice.total_imp_inc)*invoice.comissao_cn) as comision'))
+     ->join('cao_os as os','os.co_os','invoice.co_os')
+     ->join('cao_salario as salary','salary.co_usuario','os.co_usuario')
+     ->whereMonth('invoice.data_emissao','>=',Carbon::parse($request->start)->format('m'))
+     ->whereMonth('invoice.data_emissao','<=',Carbon::parse($request->end)->format('m')) 
+     ->whereYear('invoice.data_emissao','>=',Carbon::parse($request->start)->format('Y'))
+     ->whereYear('invoice.data_emissao','<=',Carbon::parse($request->end)->format('Y'))     
+     ->where('os.co_usuario',$consultor)
+     ->groupBy(DB::raw("YEAR(data_emissao),MONTH(data_emissao)"))
+     ->get();
+      
       $arrayNombre = ['nombre' => $consultor,'data' => $correlatives];
       array_push($arrayTotal, $arrayNombre);
       }
 
       $arrayTotal = collect($arrayTotal);
 
-      dd($arrayTotal);
+      //dd($arrayTotal);
 
      return view('comercial.index',[
         'data' => $data,

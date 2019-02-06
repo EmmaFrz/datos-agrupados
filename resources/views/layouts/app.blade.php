@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
 
         <!-- Specific Page Vendor CSS -->
+        <link rel="stylesheet" href="assets/vendor/morris/morris.css" />
         <link rel="stylesheet" href="assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
         <link rel="stylesheet" href="assets/vendor/select2/select2.css" />
         <link rel="stylesheet" href="assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
@@ -70,7 +71,7 @@
                 </section>
             </div>
             <!-- Vendor -->
-            <script src="assets/vendor/jquery/jquery.js"></script>
+        <script src="assets/vendor/jquery/jquery.js"></script>
         <script src="assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
         <script src="assets/vendor/bootstrap/js/bootstrap.js"></script>
         <script src="assets/vendor/nanoscroller/nanoscroller.js"></script>
@@ -103,7 +104,19 @@
         <script src="assets/vendor/bootstrap-maxlength/bootstrap-maxlength.js"></script>
         <script src="assets/vendor/ios7-switch/ios7-switch.js"></script>
         <script src="assets/vendor/jquery-validation/jquery.validate.js"></script>
-
+        <script src="assets/vendor/jquery-appear/jquery.appear.js"></script>
+        <script src="assets/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
+        <script src="assets/vendor/flot/jquery.flot.js"></script>
+        <script src="assets/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
+        <script src="assets/vendor/flot/jquery.flot.pie.js"></script>
+        <script src="assets/vendor/flot/jquery.flot.categories.js"></script>
+        <script src="assets/vendor/flot/jquery.flot.resize.js"></script>
+        <script src="assets/vendor/jquery-sparkline/jquery.sparkline.js"></script>
+        <script src="assets/vendor/raphael/raphael.js"></script>
+        <script src="assets/vendor/morris/morris.js"></script>
+        <script src="assets/vendor/gauge/gauge.js"></script>
+        <script src="assets/vendor/snap-svg/snap.svg.js"></script>
+        <script src="assets/vendor/liquid-meter/liquid.meter.js"></script>
         <!-- Theme Base, Components and Settings -->
         <script src="assets/javascripts/theme.js"></script>
 
@@ -115,8 +128,8 @@
 
 
         <!-- Examples -->
+        <script src="assets/javascripts/ui-elements/examples.charts.js"></script>
         <script src="assets/javascripts/forms/examples.advanced.form.js" /></script>
-
         </section>
     </body>
 </html>

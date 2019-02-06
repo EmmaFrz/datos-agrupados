@@ -54,17 +54,52 @@
 		</section>
 	</div>
 	@if($correlatives)
-		@foreach($correlatives as $correlative)
-			{{$correlative['nombre']}}<br>
-			@foreach($correlative['data'] as $data)
-			{{$data->year}} 	<br>
-			{{$data->month}} <br>
-			{{$data->liquido}} <br>
-			{{$data->comision}} <br>
-			<p>----------------------</p>
-			@endforeach
+		@foreach($correlatives as $correlative)	
+		<div class="col-md-12">
+		<section class="panel panel-featured panel-featured-info">
+			<header class="panel-heading">
+				<div class="panel-actions">
+					<a href="#" class="fa fa-caret-down"></a>
+					<a href="#" class="fa fa-times"></a>
+				</div>
+				<h2 class="panel-title">{{$correlative['nombre']}}</h2>
+			</header>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped mb-none">
+						<thead>
+							<tr>
+								<th>Fecha</th>
+								<th>Liquido</th>
+								<th>Salario</th>
+								<th>Comision</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($correlative['data'] as $data)	
+								<tr>			
+									<td>{{$data->month}} {{$data->year}}</td> 	
+									<td>{{$data->liquido}}</td>
+									<td>{{$data->salario}}</td> 
+									<td>{{$data->comision}}</td>
+									<td>{{$data->total}}</td>
+								</tr>	
+							@endforeach	
+						</tbody>
+					</table>
+				</div>			
+			</div>	
+		</section>
+		</div>
 		@endforeach
 	@endif
-</div>
 @endsection
 		
+
+
+
+
+
+
+

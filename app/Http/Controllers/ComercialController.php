@@ -21,14 +21,6 @@ class ComercialController extends Controller
 
   public function datos(Request $request)
   {
-      $startDate = Carbon::parse($request->start);
-      $endDate = Carbon::parse($request->end)->format('Y-m');
-      $dateRange = [$startDate->format('Y-m')];
-
-      while ( $endDate >= $startDate) {
-        array_push($dateRange, $startDate->addMonth()->format('Y-m'));
-      }
-
       $data = ComercialController::consultores();
 
       $validatedData = $request->validate([
@@ -36,24 +28,36 @@ class ComercialController extends Controller
         'end' => 'required',
         'consultor' => 'required',
       ]);
+
       $arrayTotal = [];
       $arrayNombre = [];
       foreach ($request->consultor as $consultor) 
       {
         
       $correlatives = DB::table('cao_fatura as invoice')
-      ->select(DB::raw('YEAR(invoice.data_emissao) as year, MONTH(invoice.data_emissao) as month,SUM(invoice.valor - (invoice.valor*(invoice.total_imp_inc/100))) as liquido, SUM(invoice.valor - (invoice.valor*invoice.total_imp_inc)*invoice.comissao_cn) as comision'))
+      ->select(DB::raw('YEAR(invoice.data_emissao) as year,
+       MONTHNAME(invoice.data_emissao) as month, 
+       ROUND(SUM(invoice.valor - (invoice.valor*(invoice.total_imp_inc/100))),2) as liquido, 
+       ROUND(SUM(invoice.valor - (invoice.valor*invoice.total_imp_inc)*invoice.comissao_cn),2) as comision, 
+       salary.brut_salario as salario, 
+       ROUND(SUM(invoice.valor - (invoice.valor*(invoice.total_imp_inc/100))),2) - ( salary.brut_salario + ROUND(SUM(invoice.valor - (invoice.valor*invoice.total_imp_inc)*invoice.comissao_cn),2)) as total'))
      ->join('cao_os as os','os.co_os','invoice.co_os')
      ->join('cao_salario as salary','salary.co_usuario','os.co_usuario')
      ->whereMonth('invoice.data_emissao','>=',Carbon::parse($request->start)->format('m'))
      ->whereMonth('invoice.data_emissao','<=',Carbon::parse($request->end)->format('m')) 
      ->whereYear('invoice.data_emissao','>=',Carbon::parse($request->start)->format('Y'))
      ->whereYear('invoice.data_emissao','<=',Carbon::parse($request->end)->format('Y'))     
+     ->orderBy('invoice.data_emissao','ASC')
      ->where('os.co_usuario',$consultor)
-     ->groupBy(DB::raw("YEAR(data_emissao),MONTH(data_emissao)"))
+     ->groupBy(DB::raw("YEAR(data_emissao),MONTHNAME(data_emissao),salary.brut_salario"))
      ->get();
       
-      $arrayNombre = ['nombre' => $consultor,'data' => $correlatives];
+      $name =  DB::table('cao_usuario as user')
+      ->select('user.no_usuario')
+      ->where('user.co_usuario',$consultor)
+      ->first();    
+
+      $arrayNombre = ['nombre' => $name->no_usuario, 'data' => $correlatives];
       array_push($arrayTotal, $arrayNombre);
       }
 
@@ -64,8 +68,8 @@ class ComercialController extends Controller
      return view('comercial.index',[
         'data' => $data,
         'correlatives' => $arrayTotal,
-        'pizza' => false,
-        'graphic' => false
+        'chart' => json_encode($arrayTotal),
+
       ]);
   }
 
